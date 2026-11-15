@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ledger — Accounting</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f3f7fa;color:#183047;font:15px Arial,sans-serif}
+header{background:#123b55;color:white;padding:20px 6%;display:flex;justify-content:space-between;align-items:center}
+h1{margin:0;font-size:23px}main{max-width:1050px;margin:28px auto;padding:0 18px}
+button{border:0;border-radius:7px;background:#087f83;color:white;padding:10px 15px;cursor:pointer}
+button.secondary{background:#e4edf1;color:#183047}
+nav{display:flex;gap:9px;margin-bottom:20px;flex-wrap:wrap}
+.card{background:white;border:1px solid #dce6eb;border-radius:12px;padding:20px;margin-bottom:18px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px}
+.stat{font-size:25px;font-weight:bold;margin-top:10px}
+label{display:block;margin:12px 0 5px}input,select{width:100%;padding:10px;border:1px solid #bacbd3;border-radius:7px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
+table{width:100%;border-collapse:collapse}td,th{text-align:left;padding:12px;border-bottom:1px solid #e5edf0}
+.wrap{overflow-x:auto}.muted{color:#617788}small{display:block;margin-top:8px}
+</style>
+</head>
+<body>
+<header><h1>Ledger</h1><button id="backup">Download backup</button></header>
+<main>
+<nav>
+<button onclick="show('dashboard')">Dashboard</button>
+<button onclick="show('invoices')">Invoices</button>
+<button onclick="show('expenses')">Expenses</button>
+</nav>
+<section class="stats" id="stats"></section>
+<section class="card">
+<h2 id="formTitle">New invoice</h2>
+<form id="entry">
+<div class="grid">
+<div><label for="type">Type</label><select id="type"><option value="invoice">Invoice</option><option value="expense">Expense</option></select></div>
+<div><label for="party">Customer or vendor</label><input id="party" required maxlength="100"></div>
+<div><label for="date">Date</label><input id="date" type="date" required></div>
+<div><label for="amount">Amount</label><input id="amount" type="number" min="0.01" step="0.01" required></div>
+</div>
+<label for="description">Description</label><input id="description" maxlength="200">
+<p><button>Add entry</button></p>
+</form>
+</section>
+<section class="card"><h2 id="listTitle">Recent entries</h2><div class="wrap">
+<table><thead><tr><th>Date</th><th>Type</th><th>Customer / vendor</th><th>Description</th><th>Amount</th><th>Status</th><th>Action</th></tr></thead><tbody id="rows"></tbody></table>
+</div><small class="muted">Amounts use your chosen currency; this app does not calculate tax.</small></section>
+</main>
+<script>
+const key='ledger_entries_v1';
+let entries=[];
+try{entries=JSON.parse(localStorage.getItem(key)||'[]');if(!Array.isArray(entries))entries=[]}catch{entries=[]}
+let view='dashboard';
+const $=id=>document.getElementById(id);
+const money=n=>Number(n).toFixed(2);
+function save(){localStorage.setItem(key,JSON.stringify(entries));render()}
+function show(v){view=v;$('listTitle').textContent=v==='dashboard'?'Recent entries':v==='invoices'?'Invoices':'Expenses';render()}
+function cell(row,value){let td=row.insertCell();td.textContent=value;return td}
+function render(){
+$('stats').replaceChildren();
+let paid=0,due=0,spent=0;
+entries.forEach(e=>{if(e.type==='expense')spent+=Number(e.amount);else if(e.paid)paid+=Number(e.amount);else due+=Number(e.amount)});
+[['Paid income',paid],['Unpaid invoices',due],['Expenses',spent],['Cash difference',paid-spent]].forEach(([name,value])=>{
+let box=document.createElement('div');box.className='card';
+let label=document.createElement('div');label.textContent=name;
+let figure=document.createElement('div');figure.className='stat';figure.textContent=money(value);
+box.append(label,figure);$('stats').append(box)});
+$('rows').replaceChildren();
+entries.filter(e=>view==='dashboard'||e.type===(view==='invoices'?'invoice':'expense'))
+.slice().reverse().forEach(e=>{
+let row=$('rows').insertRow();
+[e.date,e.type,e.party,e.description||'—',money(e.amount),e.type==='expense'?'Recorded':e.paid?'Paid':'Unpaid'].forEach(v=>cell(row,v));
+let action=row.insertCell();
+if(e.type==='invoice'){let b=document.createElement('button');b.className='secondary';b.textContent=e.paid?'Mark unpaid':'Mark paid';b.onclick=()=>{e.paid=!e.paid;save()};action.append(b)}
+});
+}
+$('date').value=new Date().toISOString().slice(0,10);
+$('entry').onsubmit=event=>{
+event.preventDefault();
+entries.push({type:$('type').value,party:$('party').value.trim(),date:$('date').value,amount:Number($('amount').value),description:$('description').value.trim(),paid:false});
+save();event.target.reset();$('date').value=new Date().toISOString().slice(0,10)
+};
+$('backup').onclick=()=>{
+let blob=new Blob([JSON.stringify(entries,null,2)],{type:'application/json'});
+let link=document.createElement('a');link.href=URL.createObjectURL(blob);link.download='ledger-backup.json';link.click();
+setTimeout(()=>URL.revokeObjectURL(link.href),1000)
+};
+render();
+</script>
+</body>
+</html>
