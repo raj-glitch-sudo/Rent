@@ -230,7 +230,7 @@
         <button onclick="switchTab('import')" id="nav-import" class="nav-item" title="Import & Export"><span class="nav-ico">📥</span><span class="sidebar-text">Import & Export</span></button>
       </nav>
       </div>
-      <div class="sidebar-footer-text text-xs text-slate-400 dark:text-slate-500 pt-4 border-t border-slate-200 dark:border-slate-800">Scholar's Nook ERP v4.1</div>
+      <div class="sidebar-footer-text text-xs text-slate-400 dark:text-slate-500 pt-4 border-t border-slate-200 dark:border-slate-800">Scholar's Nook ERP v4.2</div>
     </aside>
 
     <!-- Main Content Area -->
@@ -354,7 +354,7 @@
             <p class="text-xs text-slate-500 dark:text-slate-400">Post transaction entries and balance ledger accounts.</p>
           </div>
           <div class="flex flex-wrap gap-2">
-            <button onclick="openImportTxModal()" class="px-4 py-2.5 bg-purple-600 hover:bg-purple-500 text-white font-bold rounded-lg text-xs shadow-md transition flex items-center space-x-2" title="Paste rows copied from Google Sheets / Excel, or upload a CSV">
+            <button onclick="openImportTxModal('Rent')" class="px-4 py-2.5 bg-purple-600 hover:bg-purple-500 text-white font-bold rounded-lg text-xs shadow-md transition flex items-center space-x-2" title="Paste rows copied from Google Sheets / Excel, or upload a CSV">
               <span>📥</span>
               <span>Import from Spreadsheet</span>
             </button>
@@ -426,6 +426,10 @@
               <span>🛌</span>
               <span>+ Add Room</span>
             </button>
+            <button onclick="openImportTxModal('Rooms')" class="px-4 py-2 bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 font-bold rounded-lg text-xs transition flex items-center space-x-1.5" title="Paste your Room Inventory tab from Google Sheets">
+              <span>📥</span>
+              <span>Import Rooms</span>
+            </button>
             <div class="flex items-center space-x-2">
               <label class="text-xs text-slate-500 dark:text-slate-400 whitespace-nowrap">Filter:</label>
               <select id="property-filter" onchange="render()" class="p-2 rounded bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs shadow-sm">
@@ -445,10 +449,16 @@
             <h2 class="text-2xl font-bold">Tenant Roster & Rent Due Tracking</h2>
             <p class="text-xs text-slate-500 dark:text-slate-400">View registered boarders, lease agreements, and monthly rent schedules.</p>
           </div>
-          <button onclick="openTenantModal()" class="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-lg text-xs shadow-md transition flex items-center space-x-2">
-            <span>👤</span>
-            <span>+ Register Tenant</span>
-          </button>
+          <div class="flex flex-wrap gap-2">
+            <button onclick="openImportTxModal('Boarders')" class="px-4 py-2.5 bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 font-bold rounded-lg text-xs transition flex items-center space-x-2" title="Paste your Boarders Info tab from Google Sheets">
+              <span>📥</span>
+              <span>Import Boarders</span>
+            </button>
+            <button onclick="openTenantModal()" class="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-lg text-xs shadow-md transition flex items-center space-x-2">
+              <span>👤</span>
+              <span>+ Register Tenant</span>
+            </button>
+          </div>
         </div>
 
         <div class="bg-white dark:bg-slate-800 p-6 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
@@ -819,11 +829,16 @@
           <div class="flex items-center space-x-3">
             <span class="text-2xl">📋</span>
             <div>
-              <h3 class="font-bold text-base text-purple-600 dark:text-purple-400">Import Transactions from Spreadsheet</h3>
-              <p class="text-xs text-slate-400">Copy rows straight from your Google Sheet (e.g. Expenses Log) and paste them — with a preview, account mapping and duplicate check before anything is saved.</p>
+              <h3 class="font-bold text-base text-purple-600 dark:text-purple-400">Import from Spreadsheet (copy &amp; paste)</h3>
+              <p class="text-xs text-slate-400">Room Inventory → Boarders Info → Rent Transaction Log → Expenses Log. Copy the rows in Google Sheets and paste — you get a preview, account mapping and duplicate check before anything is saved.</p>
             </div>
           </div>
-          <button onclick="openImportTxModal()" class="px-4 py-3 bg-purple-600 hover:bg-purple-500 text-white font-bold rounded-lg text-sm transition shadow-sm whitespace-nowrap">📥 Import Transactions</button>
+          <div class="flex flex-wrap gap-2">
+            <button onclick="openImportTxModal('Rooms')" class="px-3 py-2 bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 font-bold rounded-lg text-xs transition whitespace-nowrap">🛏 Rooms</button>
+            <button onclick="openImportTxModal('Boarders')" class="px-3 py-2 bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 font-bold rounded-lg text-xs transition whitespace-nowrap">👤 Boarders</button>
+            <button onclick="openImportTxModal('Rent')" class="px-3 py-2 bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 font-bold rounded-lg text-xs transition whitespace-nowrap">💰 Rent</button>
+            <button onclick="openImportTxModal('Expense')" class="px-3 py-2 bg-purple-600 hover:bg-purple-500 text-white font-bold rounded-lg text-xs transition shadow-sm whitespace-nowrap">💸 Expenses</button>
+          </div>
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -894,7 +909,7 @@
     <div class="bg-white dark:bg-slate-800 p-6 rounded-xl border border-slate-200 dark:border-slate-700 w-full shadow-2xl max-h-[90vh] overflow-y-auto" style="max-width:72rem">
       <div class="flex justify-between items-center mb-4">
         <div>
-          <h3 class="font-bold text-lg text-purple-600 dark:text-purple-400">📥 Import Transactions from Spreadsheet</h3>
+          <h3 class="font-bold text-lg text-purple-600 dark:text-purple-400">📥 Import from Spreadsheet</h3>
           <p class="text-[11px] text-slate-500 dark:text-slate-400">Nothing is saved until you click <b>Import</b> at the bottom.</p>
         </div>
         <button onclick="closeImportTxModal()" class="text-xs px-2.5 py-1 bg-slate-200 dark:bg-slate-700 rounded font-bold">✕ Close</button>
@@ -904,10 +919,13 @@
       <div class="space-y-3">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
           <div>
-            <label class="text-xs text-slate-500 dark:text-slate-400 font-semibold">1. Nature of these rows</label>
+            <label class="text-xs text-slate-500 dark:text-slate-400 font-semibold">1. What are you importing?</label>
             <select id="imp-nature" onchange="impNatureChanged()" class="w-full p-2.5 rounded bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 mt-1 text-sm font-semibold">
-              <option value="Expense">💸 Expenses (Dr Expense / Cr Cash or Bank)</option>
-              <option value="Income">💰 Income (Dr Cash or Bank / Cr Revenue)</option>
+              <option value="Expense">💸 Expenses Log</option>
+              <option value="Rent">💰 Rent Transaction Log</option>
+              <option value="Boarders">👤 Boarders Info</option>
+              <option value="Rooms">🛏 Room Inventory</option>
+              <option value="Income">🧾 Other Income (Expenses Log layout)</option>
             </select>
           </div>
           <div class="md:col-span-2">
@@ -918,8 +936,9 @@
 
         <div>
           <label class="text-xs text-slate-500 dark:text-slate-400 font-semibold">2. Paste rows from Google Sheets / Excel</label>
-          <textarea id="imp-paste" rows="6" placeholder="In your sheet, select the rows (include the header row: Date, Site, Particulars, Mode of Payment, Category, Amount) → Ctrl/Cmd + C → paste here." class="w-full p-2.5 rounded bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 mt-1 text-xs font-mono"></textarea>
-          <p class="text-[10px] text-slate-400 mt-1 leading-relaxed">No header row? Columns are read in this order: <b>Date, Site, Particulars, Mode of Payment, Category, Amount</b> (optional 7th: Ref). Amounts like ₱1,000.00 and dates like 8/18/2026 are fine.</p>
+          <textarea id="imp-paste" rows="6" placeholder="In your Google Sheet, click the header row, Shift+click the last row → Ctrl/Cmd + C → paste here." class="w-full p-2.5 rounded bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 mt-1 text-xs font-mono"></textarea>
+          <p id="imp-kind-hint" class="text-[10px] text-slate-400 mt-1 leading-relaxed"></p>
+          <p id="imp-detect-note" class="hidden text-[11px] mt-1 p-2 rounded bg-sky-500/15 text-sky-500"></p>
         </div>
 
         <div class="flex flex-wrap gap-2">
@@ -928,9 +947,12 @@
         </div>
       </div>
 
+      <!-- OPTIONS (Boarders / Rooms) -->
+      <div id="imp-options" class="hidden mt-6 pt-4 border-t border-slate-200 dark:border-slate-700 space-y-3"></div>
+
       <!-- STEP 2: MAPPING -->
       <div id="imp-mapping" class="hidden mt-6 pt-4 border-t border-slate-200 dark:border-slate-700">
-        <h4 class="font-bold text-sm mb-1">3. Match your sheet's values to your Chart of Accounts</h4>
+        <h4 class="font-bold text-sm mb-1">Match your sheet's values to your Chart of Accounts</h4>
         <p class="text-[11px] text-slate-500 dark:text-slate-400 mb-3">Your choices are remembered for next time.</p>
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
           <div class="p-3 rounded-lg bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-700">
@@ -947,7 +969,7 @@
       <!-- STEP 3: PREVIEW -->
       <div id="imp-preview-wrap" class="hidden mt-6 pt-4 border-t border-slate-200 dark:border-slate-700">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-2">
-          <h4 class="font-bold text-sm">4. Preview</h4>
+          <h4 class="font-bold text-sm">Preview</h4>
           <div class="flex flex-wrap items-center gap-2 text-[11px]">
             <button onclick="impSelectAll(true)" class="px-2 py-1 rounded bg-slate-200 dark:bg-slate-700 font-bold">Tick all valid</button>
             <button onclick="impSelectAll(false)" class="px-2 py-1 rounded bg-slate-200 dark:bg-slate-700 font-bold">Untick all</button>
@@ -956,10 +978,7 @@
         <div class="overflow-x-auto max-h-96 overflow-y-auto border border-slate-200 dark:border-slate-700 rounded-lg">
           <table class="w-full text-xs">
             <thead class="bg-slate-100 dark:bg-slate-900 sticky top-0">
-              <tr class="text-left text-slate-500 dark:text-slate-400">
-                <th class="p-2">✔</th><th class="p-2">Date</th><th class="p-2">Site</th><th class="p-2">Particulars</th>
-                <th class="p-2">Debit</th><th class="p-2">Credit</th><th class="p-2 text-right">Amount</th><th class="p-2">Status</th>
-              </tr>
+              <tr id="imp-preview-head" class="text-left text-slate-500 dark:text-slate-400"></tr>
             </thead>
             <tbody id="imp-preview-body" class="divide-y divide-slate-100 dark:divide-slate-700"></tbody>
           </table>
@@ -2390,10 +2409,18 @@
     }
     function isRentPaymentFor(t, tn) {
       if (t.type !== 'Income') return false;
-      if (t.category === 'deposit' || t.category === 'utility') return false;
+      if (t.category === 'deposit' || t.category === 'utility' || t.category === 'other') return false;
       const p = (t.particulars || '').toLowerCase();
       if (p.startsWith('security deposit') || p.includes('bill collection')) return false;
       return p.includes(tn.name.toLowerCase());
+    }
+    // A payment counts toward the month(s) it covers (Month column of the Rent Transaction Log);
+    // entries without that info fall back to their payment date, as before.
+    function txCoversMonth(t, ym) {
+      return Array.isArray(t.coverMonths) && t.coverMonths.length ? t.coverMonths.includes(ym) : (t.date || '').startsWith(ym);
+    }
+    function txMonthShare(t) {
+      return Array.isArray(t.coverMonths) && t.coverMonths.length > 1 ? t.amount / t.coverMonths.length : t.amount;
     }
     function getRentRevAcc() {
       const rev = chartOfAccounts.filter(a => a.category === 'Revenue' && !a.isContra);
@@ -3252,11 +3279,11 @@
                 monthsToDisplay.forEach(m => {
                   const targetMonthStr = `${year}-${m.num}`;
 
-                  const tenantMonthTx = transactions.filter(t => isRentPaymentFor(t, tenant) && t.date.startsWith(targetMonthStr));
+                  const tenantMonthTx = transactions.filter(t => isRentPaymentFor(t, tenant) && txCoversMonth(t, targetMonthStr));
 
                   if (tenantMonthTx.length > 0) {
                     tenantMonthTx.sort((a, b) => new Date(b.date) - new Date(a.date));
-                    const tx = { ...tenantMonthTx[0], amount: tenantMonthTx.reduce((s, x) => s + x.amount, 0) };
+                    const tx = { ...tenantMonthTx[0], amount: tenantMonthTx.reduce((s, x) => s + txMonthShare(x), 0) };
                     const [yr, mo, dy] = tx.date.split('-');
 
                     fullHTML += `
@@ -4437,16 +4464,18 @@
     }
 
     // ==========================================================
-    // --- IMPORT TRANSACTIONS FROM SPREADSHEET (v4.1) ---
-    // Paste rows copied from Google Sheets/Excel (tab-separated) or load a CSV/TSV.
-    // Preview → map categories & payment modes to COA → duplicate check → post as journal entries.
+    // --- SPREADSHEET IMPORT (v4.2) ---
+    // Paste rows copied from Google Sheets/Excel (or load a CSV/TSV) for:
+    //   Expenses Log · Rent Transaction Log · Boarders Info · Room Inventory · Other Income
+    // Preview → map values to accounts → duplicate check → save.
     // ==========================================================
     const IMP_MAP_KEY = 'dorm_import_map';
     const IMP_NEW = '__new__';
     let impRows = [];
-    let impCatMap = {};   // normalized category -> account code | IMP_NEW
+    let impCatMap = {};   // normalized category/type -> account code | IMP_NEW
     let impModeMap = {};  // normalized mode -> account code
     let impLabels = {};   // normalized key -> text as typed in the sheet
+    let impSeq = 0;
     let impSaved = {};
     try { impSaved = JSON.parse(localStorage.getItem(IMP_MAP_KEY)) || {}; } catch (e) { impSaved = {}; }
 
@@ -4454,10 +4483,84 @@
     const impNorm = s => String(s || '').toLowerCase().replace(/[^a-z0-9]/g, '');
     const impPeso = n => '₱' + Number(n || 0).toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     const impAcc = code => chartOfAccounts.find(a => a.code == code);
-    const impNature = () => document.getElementById('imp-nature').value;
+    const impKind = () => document.getElementById('imp-nature').value;
+    const impIsTx = k => k === 'Expense' || k === 'Income' || k === 'Rent';
+    const impId = () => Date.now() * 1000 + (impSeq++ % 1000);   // never collides with the app's Date.now() ids
+    // "DELA CRUZ, JUAN" and "Juan Dela Cruz" (and Ñ/N) are treated as the same person
+    const impNameKey = s => String(s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().split(/[^a-z0-9]+/).filter(Boolean).sort().join(' ');
+    const impFindTenant = name => { const k = impNameKey(name); return k ? tenants.find(t => impNameKey(t.name) === k) : null; };
+    const impFindProp = site => site ? properties.find(p => impKey(p.name) === impKey(site)) : null;
+    const impFindRoom = (propId, name) => rooms.find(r => r.propertyId == propId && impKey(r.name) === impKey(name));
+    const impChip = (cls, text, title) => `<span class="badge ${cls}" ${title ? `title="${esc(title)}"` : ''}>${esc(text)}</span>`;
+    const CHIP_OK = 'bg-emerald-500/15 text-emerald-600', CHIP_WARN = 'bg-amber-500/20 text-amber-600', CHIP_BAD = 'bg-rose-500/15 text-rose-600', CHIP_INFO = 'bg-sky-500/15 text-sky-500';
 
-    function openImportTxModal() {
+    const IMP_KINDS = {
+      Expense: {
+        cols: {
+          date: ['date', 'transactiondate', 'txdate', 'datepaid'],
+          site: ['site', 'property', 'location', 'branch'],
+          particulars: ['particulars', 'description', 'details', 'payee', 'remarks', 'item'],
+          mode: ['modeofpayment', 'mode', 'paymentmode', 'paymenttype', 'paidvia', 'paidthru', 'paidthrough'],
+          category: ['category', 'account', 'accounttitle', 'expensecategory', 'type'],
+          amount: ['amount', 'amountpaid', 'total', 'cost'],
+          ref: ['ref', 'reference', 'refno', 'voucher', 'voucherno', 'orno', 'receiptno']
+        },
+        order: ['date', 'site', 'particulars', 'mode', 'category', 'amount', 'ref'],
+        hint: 'Columns: <b>Date, Site, Particulars, Mode of Payment, Category, Amount</b> (optional: Ref).'
+      },
+      Rent: {
+        cols: {
+          date: ['date', 'datepaid', 'paymentdate'],
+          boarder: ['boarder', 'boardername', 'name', 'tenant', 'payer'],
+          room: ['roomnumber', 'room', 'roomno'],
+          site: ['site', 'property'],
+          category: ['type', 'transactiontype', 'paymentfor'],
+          month: ['month', 'months', 'monthcovered', 'formonth', 'monthpaid'],
+          applicable: ['applicableamount', 'amountdue', 'due'],
+          amount: ['amountpaid', 'amount', 'paid'],
+          mode: ['paymenttype', 'modeofpayment', 'mode', 'paymentmode'],
+          paidto: ['paidto', 'receivedby', 'collector'],
+          ref: ['ref', 'reference', 'refno', 'orno', 'receiptno']
+        },
+        order: ['date', 'boarder', 'room', 'site', 'category', 'month', 'applicable', 'amount', 'mode', 'paidto'],
+        hint: 'Columns: <b>Date, Boarder, Room Number, Site, Type, Month, Applicable Amount, Amount Paid, Payment type, Paid To</b>. Tip: import <b>Room Inventory</b> and <b>Boarders Info</b> first so payments link to your boarders.'
+      },
+      Boarders: {
+        cols: {
+          name: ['name', 'boarder', 'boardername', 'tenant', 'fullname'],
+          address: ['address'],
+          contact: ['contact', 'contactno', 'contactnumber', 'phone', 'mobile'],
+          site: ['site', 'property'],
+          room: ['room', 'roomnumber', 'roomno'],
+          start: ['startingdate', 'startdate', 'leasestart', 'moveindate', 'movein', 'datestarted'],
+          status: ['status'],
+          deposit: ['securitydeposit', 'deposit'],
+          due: ['duedate', 'dueday'],
+          rate: ['custommonthlyrate', 'monthlyrate', 'rate']
+        },
+        order: ['name', 'address', 'contact', 'site', 'room', 'start', 'status', 'deposit', 'due', 'rate'],
+        hint: 'Columns: <b>Name, Address, Contact, Site, Room, Starting Date, Status, Security Deposit, Due Date, Custom Monthly Rate</b>. Tip: import <b>Room Inventory</b> first so each boarder gets the right room rate.'
+      },
+      Rooms: {
+        cols: {
+          site: ['site', 'property'],
+          room: ['roomnumber', 'room', 'roomno'],
+          category: ['category', 'roomtype', 'type'],
+          pax: ['pax', 'capacity', 'beds', 'bedcapacity'],
+          rate: ['monthlyrate', 'rate', 'roomrate'],
+          occupants: ['occupants', 'tenants', 'boarders']
+        },
+        order: ['site', 'room', 'category', 'pax', 'rate', 'occupants'],
+        hint: 'Columns: <b>Site, Room Number, Category, Pax, Monthly Rate</b> (optional: Occupants). If your sheet is filtered (e.g. one site only), only the visible rows get copied — clear the filter to bring in every site.'
+      }
+    };
+    IMP_KINDS.Income = IMP_KINDS.Expense;
+    const IMP_KIND_NAMES = { Expense: 'Expenses Log', Income: 'Other Income', Rent: 'Rent Transaction Log', Boarders: 'Boarders Info', Rooms: 'Room Inventory' };
+
+    function openImportTxModal(kind) {
+      if (kind) document.getElementById('imp-nature').value = kind;
       impClear();
+      impShowKindHint();
       document.getElementById('importTxModal').classList.remove('hidden');
     }
     function closeImportTxModal() {
@@ -4467,8 +4570,12 @@
       impRows = []; impCatMap = {}; impModeMap = {}; impLabels = {};
       document.getElementById('imp-paste').value = '';
       document.getElementById('imp-file').value = '';
-      document.getElementById('imp-mapping').classList.add('hidden');
-      document.getElementById('imp-preview-wrap').classList.add('hidden');
+      document.getElementById('imp-detect-note').classList.add('hidden');
+      ['imp-mapping', 'imp-options', 'imp-preview-wrap'].forEach(id => document.getElementById(id).classList.add('hidden'));
+    }
+    function impShowKindHint() {
+      document.getElementById('imp-kind-hint').innerHTML = IMP_KINDS[impKind()].hint +
+        ' Include the header row when you copy. Amounts like ₱1,000.00 and dates like 8/18/2026 are fine.';
     }
     function impLoadFile(input) {
       if (!input.files.length) return;
@@ -4477,10 +4584,9 @@
       reader.readAsText(input.files[0]);
     }
     function impNatureChanged() {
-      if (!impRows.length) return;
-      impCatMap = {}; impModeMap = {};
-      impBuildMaps();
-      impRenderAll();
+      impShowKindHint();
+      document.getElementById('imp-detect-note').classList.add('hidden');
+      if (document.getElementById('imp-paste').value.trim()) impParse(true);
     }
 
     // Robust date reader: 8/18/2026, 18/08/2026, 2026-08-18, Aug 18, 2026, Sheets/Excel serial numbers
@@ -4497,15 +4603,42 @@
       let m;
       if ((m = /^(\d{4})[\/\-.](\d{1,2})[\/\-.](\d{1,2})$/.exec(str))) return ok(m[1], m[2], m[3]);
       if ((m = /^(\d{1,2})[\/\-.](\d{1,2})[\/\-.](\d{2,4})$/.exec(str))) {
-        let a = +m[1], b = +m[2], y = m[3].length === 2 ? 2000 + +m[3] : +m[3];
+        const a = +m[1], b = +m[2], y = m[3].length === 2 ? 2000 + +m[3] : +m[3];
         return a > 12 ? ok(y, b, a) : ok(y, a, b);   // M/D/Y like your sheet; D/M/Y when the first number is > 12
       }
       if (/^\d{5}(\.\d+)?$/.test(str)) {             // spreadsheet serial date
         const dt = new Date(Math.round((parseFloat(str) - 25569) * 86400000));
         return ok(dt.getUTCFullYear(), dt.getUTCMonth() + 1, dt.getUTCDate());
       }
+      if (!/[a-z]{3}/i.test(str)) return '';          // e.g. the "m/d/yyyy" placeholder
       const dt = new Date(str);
       return isNaN(dt.getTime()) ? '' : ok(dt.getFullYear(), dt.getMonth() + 1, dt.getDate());
+    }
+
+    // "April May", "June, July", "Dec 2026" → ['2026-04','2026-05']  (year taken from the payment date)
+    const IMP_MON = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
+    function impMonths(text, isoDate) {
+      const out = [];
+      if (!text) return out;
+      const now = new Date();
+      const py = isoDate ? +isoDate.slice(0, 4) : now.getFullYear();
+      const pm = isoDate ? +isoDate.slice(5, 7) : now.getMonth() + 1;
+      const re = /\b(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\.?(?:\s*,?\s*(\d{4}))?/gi;
+      let m;
+      while ((m = re.exec(text))) {
+        const mi = IMP_MON.indexOf(m[1].toLowerCase()) + 1;
+        let y = m[2] ? +m[2] : py;
+        if (!m[2]) { if (mi - pm > 2) y--; else if (pm - mi > 9) y++; }   // paid in Jan for "December" → last year
+        const key = `${y}-${String(mi).padStart(2, '0')}`;
+        if (!out.includes(key)) out.push(key);
+      }
+      return out.sort();
+    }
+    function impMonthLabel(list) {
+      if (!list || !list.length) return '';
+      const name = k => new Date(+k.slice(0, 4), +k.slice(5, 7) - 1, 1).toLocaleString('en-US', { month: 'long' });
+      const years = [...new Set(list.map(k => k.slice(0, 4)))];
+      return years.length === 1 ? `${list.map(name).join(', ')} ${years[0]}` : list.map(k => `${name(k)} ${k.slice(0, 4)}`).join(', ');
     }
 
     function impSplit(text) {
@@ -4518,79 +4651,147 @@
       return rows;
     }
 
-    const IMP_COLS = {
-      date: ['date', 'transactiondate', 'txdate', 'datepaid'],
-      site: ['site', 'property', 'location', 'branch'],
-      particulars: ['particulars', 'description', 'details', 'payee', 'remarks', 'item'],
-      mode: ['modeofpayment', 'mode', 'paymentmode', 'paymenttype', 'paidvia', 'paidthru', 'paidthrough'],
-      category: ['category', 'account', 'accounttitle', 'expensecategory', 'type'],
-      amount: ['amount', 'amountpaid', 'total', 'cost'],
-      ref: ['ref', 'reference', 'refno', 'voucher', 'voucherno', 'orno', 'receiptno']
-    };
+    // Recognise which tab was copied from its header row
+    function impDetectKind(head) {
+      const has = h => head.includes(h);
+      if (has('boarder') && (has('amountpaid') || has('applicableamount'))) return 'Rent';
+      if (has('pax') || (has('occupants') && (has('roomnumber') || has('room')))) return 'Rooms';
+      if (has('name') && (has('securitydeposit') || has('custommonthlyrate') || has('startingdate') || has('duedate'))) return 'Boarders';
+      if (has('particulars') && has('amount')) return 'ExpenseLike';
+      return '';
+    }
 
-    function impParse() {
+    function impParse(keepKind) {
       const rows = impSplit(document.getElementById('imp-paste').value);
       if (!rows.length) { alert('Paste some rows from your spreadsheet first (or choose a CSV file).'); return; }
 
-      // header detection
       const head = rows[0].map(h => impNorm(h));
+      const note = document.getElementById('imp-detect-note');
+      note.classList.add('hidden');
+      if (!keepKind) {
+        const det = impDetectKind(head);
+        const cur = impKind();
+        const target = det === 'ExpenseLike' ? (cur === 'Income' ? 'Income' : 'Expense') : det;
+        if (target && target !== cur) {
+          document.getElementById('imp-nature').value = target;
+          impShowKindHint();
+          note.innerHTML = `ℹ️ These rows look like your <b>${IMP_KIND_NAMES[target]}</b>, so the import type was switched to match. Change it above if that's wrong.`;
+          note.classList.remove('hidden');
+        }
+      }
+      const kind = impKind();
+      const spec = IMP_KINDS[kind];
+
       const col = {};
-      Object.entries(IMP_COLS).forEach(([k, names]) => {
-        const idx = head.findIndex(h => names.includes(h));
+      Object.entries(spec.cols).forEach(([k, names]) => {
+        const idx = head.findIndex((h, i) => names.includes(h) && !Object.values(col).includes(i));
         if (idx >= 0) col[k] = idx;
       });
-      const hasHeader = col.date !== undefined && (col.amount !== undefined || col.particulars !== undefined);
-      if (!hasHeader) { ['date', 'site', 'particulars', 'mode', 'category', 'amount', 'ref'].forEach((k, i) => col[k] = i); }
-      if (!hasHeader && col.amount !== undefined && rows[0].length < 6) {
-        alert('Could not find a header row and the rows have fewer than 6 columns.\n\nInclude the header row (Date, Site, Particulars, Mode of Payment, Category, Amount) when you copy.');
-        return;
+      const hasHeader = Object.keys(col).length >= 2;
+      if (!hasHeader) {
+        Object.keys(col).forEach(k => delete col[k]);
+        spec.order.forEach((k, i) => col[k] = i);
+        if (rows[0].length < 3) {
+          alert('Could not find a header row. Include the header row (the column names) when you copy from your sheet.');
+          return;
+        }
       }
       const body = hasHeader ? rows.slice(1) : rows;
       const cell = (r, k) => (col[k] !== undefined ? String(r[col[k]] ?? '').trim() : '');
+      const onlySite = properties.length === 1 ? properties[0].name : '';
 
       impRows = [];
-      body.forEach((r, i) => {
-        if (r.every(c => !String(c).trim())) return;
-        const rawDate = cell(r, 'date');
-        const amount = Math.round(parseAmt(cell(r, 'amount')) * 100) / 100;
-        const row = {
-          i, rawDate, date: impDate(rawDate),
-          site: cell(r, 'site'), particulars: cell(r, 'particulars'),
-          mode: cell(r, 'mode') || 'Cash', category: cell(r, 'category'),
-          amount, ref: cell(r, 'ref'), err: '', dup: false, include: true
-        };
-        if (!row.particulars) row.particulars = row.category || '(no particulars)';
-        if (!rawDate && /total/i.test(r.join(' '))) return;        // skip a "Total" footer row
-        if (!row.date) row.err = rawDate ? `Unreadable date "${rawDate}"` : 'No date';
-        else if (!(amount > 0)) row.err = amount < 0 ? 'Negative amount' : 'No amount';
-        impRows.push(row);
+      body.forEach((raw, i) => {
+        if (raw.every(c => !String(c).trim())) return;
+        if (/^\s*(grand\s*)?total\b/i.test(raw.find(c => String(c).trim()) || '')) return;   // "Total" footer row
+        const r = { i, err: '', dup: false, include: true };
+
+        if (kind === 'Expense' || kind === 'Income') {
+          r.rawDate = cell(raw, 'date'); r.date = impDate(r.rawDate);
+          r.site = cell(raw, 'site'); r.particulars = cell(raw, 'particulars');
+          r.mode = cell(raw, 'mode') || 'Cash'; r.category = cell(raw, 'category');
+          r.amount = Math.round(parseAmt(cell(raw, 'amount')) * 100) / 100; r.ref = cell(raw, 'ref');
+          if (!r.particulars) r.particulars = r.category || '(no particulars)';
+          if (!r.rawDate && !(r.amount > 0) && /total/i.test(raw.join(' '))) return;
+          if (!r.date) r.err = r.rawDate ? `Unreadable date "${r.rawDate}"` : 'No date';
+          else if (!(r.amount > 0)) r.err = r.amount < 0 ? 'Negative amount' : 'No amount';
+
+        } else if (kind === 'Rent') {
+          r.rawDate = cell(raw, 'date'); r.date = impDate(r.rawDate);
+          r.boarder = cell(raw, 'boarder'); r.room = cell(raw, 'room'); r.site = cell(raw, 'site');
+          r.category = cell(raw, 'category') || 'Rental Payment';
+          r.monthText = cell(raw, 'month');
+          r.applicable = Math.round(parseAmt(cell(raw, 'applicable')) * 100) / 100;
+          r.amount = Math.round(parseAmt(cell(raw, 'amount')) * 100) / 100;
+          r.mode = cell(raw, 'mode') || 'Cash'; r.paidTo = cell(raw, 'paidto'); r.ref = cell(raw, 'ref');
+          r.coverMonths = impMonths(r.monthText, r.date);
+          r.tenant = impFindTenant(r.boarder);
+          if (!r.date) r.err = r.rawDate ? `Unreadable date "${r.rawDate}"` : 'No date';
+          else if (!r.boarder) r.err = 'No boarder name';
+          else if (!(r.amount > 0)) r.err = 'No amount paid';
+
+        } else if (kind === 'Boarders') {
+          r.name = cell(raw, 'name').replace(/\s+/g, ' ');
+          r.address = cell(raw, 'address'); r.contact = cell(raw, 'contact');
+          r.site = cell(raw, 'site') || onlySite; r.room = cell(raw, 'room');
+          r.start = impDate(cell(raw, 'start'));
+          const st = cell(raw, 'status');
+          r.status = /inactive|moved|left|out|former/i.test(st) ? 'Inactive' : (/active/i.test(st) ? 'Active' : '');
+          const dep = parseAmt(cell(raw, 'deposit')); r.deposit = dep > 0 ? dep : 0;
+          const due = cell(raw, 'due');
+          r.dueDay = /^\d{1,2}(st|nd|rd|th)?$/i.test(due) ? Math.min(31, Math.max(1, parseInt(due, 10))) : (impDate(due) ? +impDate(due).slice(8, 10) : 0);
+          r.customRate = parseAmt(cell(raw, 'rate'));
+          if (!r.name) r.err = 'No name';
+          else if (!r.site) r.err = 'No site';
+          else if (!r.room) r.err = 'No room';
+
+        } else if (kind === 'Rooms') {
+          r.site = cell(raw, 'site') || onlySite; r.room = cell(raw, 'room');
+          const cat = cell(raw, 'category');
+          r.category = /priv|solo|whole|family|exclusive/i.test(cat) ? 'private' : (/bed|share|dorm/i.test(cat) ? 'bedspacer' : '');
+          r.pax = parseInt(String(cell(raw, 'pax')).replace(/[^\d]/g, ''), 10) || 0;
+          const rateTxt = cell(raw, 'rate');
+          r.rateGiven = rateTxt !== '' && parseAmt(rateTxt) >= 0 && /\d/.test(rateTxt);
+          r.rate = parseAmt(rateTxt);
+          r.occupantNames = cell(raw, 'occupants').split(/\s*[;\/\n]\s*|\s+&\s+/).map(s => s.trim()).filter(s => s && !/^(vacant|none|-+)$/i.test(s));
+          if (!r.room) r.err = 'No room number';
+          else if (!r.site) r.err = 'No site';
+        }
+        impRows.push(r);
       });
 
       if (!impRows.length) { alert('No data rows found.'); return; }
-      impBuildMaps();
+      impCatMap = {}; impModeMap = {}; impLabels = {};
+      impAnalyze();
       impRenderAll();
     }
 
-    function impDesc(r) { return r.particulars + (r.site ? ` (${r.site})` : ''); }
-
+    // ---------- account suggestions (transactions) ----------
     function impSuggestCat(text) {
-      const nature = impNature();
-      const saved = impSaved[`${nature}|cat|${impKey(text)}`];
+      const kind = impKind();
+      const saved = impSaved[`${kind}|cat|${impKey(text)}`];
       if (saved && impAcc(saved)) return saved;
-      if (nature === 'Expense') {
-        const exps = chartOfAccounts.filter(a => a.category === 'Expense' && !a.isContra);
-        const c = impNorm(text);
-        // exact title match first, otherwise offer to create an account with the sheet's own category name
-        const exact = exps.find(a => String(a.code) === String(text).trim() || impNorm(a.title) === c);
-        if (exact) return exact.code;
-        const fuzzy = c && exps.find(a => impNorm(a.title).includes(c) || c.includes(impNorm(a.title)));
-        if (fuzzy) return fuzzy.code;
+      const c = impNorm(text);
+      const nonContra = cats => chartOfAccounts.filter(a => cats.includes(a.category) && !a.isContra);
+      const match = list => list.find(a => String(a.code) === String(text).trim() || impNorm(a.title) === c) ||
+                            (c && list.find(a => impNorm(a.title).includes(c) || c.includes(impNorm(a.title))));
+      if (kind === 'Expense') {
+        const acc = match(nonContra(['Expense']));
+        if (acc) return acc.code;
         return c ? IMP_NEW : (findExpenseAccount('', '') || {}).code;
       }
-      const revs = chartOfAccounts.filter(a => a.category === 'Revenue' && !a.isContra);
-      const c = impNorm(text);
-      let acc = revs.find(a => String(a.code) === String(text).trim() || impNorm(a.title) === c)
-             || (c && revs.find(a => impNorm(a.title).includes(c) || c.includes(impNorm(a.title))));
+      if (kind === 'Rent') {
+        if (/deposit/.test(c)) {
+          const ap = chartOfAccounts.find(a => a.roleTag === 'ap') || chartOfAccounts.find(a => a.category === 'Liability' && /deposit/i.test(a.title));
+          if (ap) return ap.code;
+        }
+        if (!c || /rent|rental|board|monthly|advance/.test(c)) return getRentRevAcc().code;
+        if (/util|elec|water|light|power|bill|internet|wifi/.test(c)) return getUtilRevAcc().code;
+        const acc = match(nonContra(['Revenue', 'Liability']));
+        return acc ? acc.code : IMP_NEW;
+      }
+      const revs = nonContra(['Revenue']);
+      let acc = match(revs);
       if (!acc && /util|elec|water|light|power/.test(c)) acc = getUtilRevAcc();
       if (!acc && /rent|board|room|bed/.test(c)) acc = getRentRevAcc();
       if (acc) return acc.code;
@@ -4603,23 +4804,114 @@
       return acc ? acc.code : '';
     }
 
-    function impBuildMaps() {
+    // ---------- analysis ----------
+    function impAnalyze() {
+      const kind = impKind();
+      if (impIsTx(kind)) {
+        impRows.forEach(r => {
+          const ck = impKey(r.category), mk = impKey(r.mode);
+          impLabels['c:' + ck] = impLabels['c:' + ck] || r.category || '(blank)';
+          impLabels['m:' + mk] = impLabels['m:' + mk] || r.mode;
+          if (!(ck in impCatMap)) impCatMap[ck] = impSuggestCat(r.category);
+          if (!(mk in impModeMap)) impModeMap[mk] = impSuggestMode(r.mode);
+        });
+        impRows.forEach(r => {
+          if (r.err) { r.dup = false; r.include = false; return; }
+          if (kind === 'Rent') {
+            const names = [r.boarder, r.tenant && r.tenant.name].filter(Boolean).map(s => s.toLowerCase());
+            r.dup = transactions.some(t => t.type === 'Income' && t.date === r.date && Math.abs(t.amount - r.amount) < 0.005 &&
+              names.some(n => (t.particulars || '').toLowerCase().includes(n)));
+          } else {
+            const desc = impDesc(r);
+            r.dup = transactions.some(t => t.type === kind && t.date === r.date && Math.abs(t.amount - r.amount) < 0.005 && (t.particulars === desc || t.particulars === r.particulars));
+          }
+          r.include = !r.dup;
+        });
+      } else if (kind === 'Boarders') impPlanBoarders();
+      else if (kind === 'Rooms') impPlanRooms();
+    }
+
+    function impPlanBoarders() {
+      const updateExisting = document.getElementById('imp-opt-update') ? document.getElementById('imp-opt-update').checked : true;
+      const counts = {}, seen = new Set();
       impRows.forEach(r => {
-        const ck = impKey(r.category), mk = impKey(r.mode);
-        impLabels['c:' + ck] = impLabels['c:' + ck] || r.category || '(blank)';
-        impLabels['m:' + mk] = impLabels['m:' + mk] || r.mode;
-        if (!(ck in impCatMap)) impCatMap[ck] = impSuggestCat(r.category);
-        if (!(mk in impModeMap)) impModeMap[mk] = impSuggestMode(r.mode);
-      });
-      // duplicate check against transactions already in the books
-      const type = impNature();
-      impRows.forEach(r => {
-        const desc = impDesc(r);
-        r.dup = !r.err && transactions.some(t => t.type === type && t.date === r.date && Math.abs(t.amount - r.amount) < 0.005 && (t.particulars === desc || t.particulars === r.particulars));
-        r.include = !r.err && !r.dup;
+        r.plan = null;
+        if (r.err) { r.include = false; return; }
+        const nk = impNameKey(r.name);
+        if (seen.has(nk)) { r.err = 'Listed twice in this paste'; r.include = false; return; }
+        seen.add(nk);
+        const prop = impFindProp(r.site);
+        const room = prop ? impFindRoom(prop.id, r.room) : null;
+        const rk = impKey(r.site) + '|' + impKey(r.room);
+        if (!(rk in counts)) counts[rk] = room ? tenants.filter(t => t.roomId == room.id && t.status !== 'Inactive').length : 0;
+        const notes = [];
+        if (!prop) notes.push(`new site “${r.site}”`);
+        if (!room) notes.push(`new room ${r.room}`);
+
+        const ex = impFindTenant(r.name);
+        if (ex) {
+          const exProp = properties.find(p => p.id == ex.propertyId), exRoom = rooms.find(x => x.id == ex.roomId);
+          const ch = [];
+          if (!exRoom || !exProp || impKey(exRoom.name) !== impKey(r.room) || impKey(exProp.name) !== impKey(r.site)) ch.push(`room → ${r.site} ${r.room}`);
+          if (r.status && r.status !== (ex.status || 'Active')) ch.push(`status → ${r.status}`);
+          if (r.contact && r.contact !== (ex.contact || '')) ch.push('contact');
+          if (r.address && r.address !== (ex.address || '')) ch.push('address');
+          if (r.start && r.start !== (ex.leaseStart || '')) ch.push(`start → ${r.start}`);
+          if (r.dueDay && r.dueDay !== ex.dueDay) ch.push(`due → ${ordinal(r.dueDay)}`);
+          if (r.customRate > 0 && Math.abs(r.customRate - (ex.rate || 0)) > 0.005) ch.push(`rate → ${impPeso(r.customRate)}`);
+          if (r.deposit > 0 && Math.abs(r.deposit - (ex.deposit || 0)) > 0.005) ch.push(`deposit → ${impPeso(r.deposit)}`);
+          r.plan = { action: ch.length ? 'update' : 'same', tenant: ex, changes: ch, notes };
+          r.include = ch.length > 0 && updateExisting;
+          return;
+        }
+        let rate = 0, rateNote = '';
+        if (r.customRate > 0) rate = r.customRate;
+        else if (room && room.category === 'private' && counts[rk] > 0) { rate = 0; rateNote = 'roommate – room rent is on the first occupant'; }
+        else if (room) { rate = room.rate || 0; rateNote = room.category === 'private' ? 'whole-room rate' : 'bedspace rate'; }
+        else rateNote = 'no room rate yet – import Room Inventory first or edit later';
+        if (r.status !== 'Inactive') counts[rk]++;
+        r.plan = { action: 'new', rate, rateNote, notes };
+        r.include = true;
       });
     }
 
+    function impPlanRooms() {
+      const addOcc = document.getElementById('imp-opt-occupants') ? document.getElementById('imp-opt-occupants').checked : false;
+      const seenNames = new Set(), seenRooms = new Set();
+      impRows.forEach(r => {
+        r.plan = null; r.newOccupants = [];
+        if (r.err) { r.include = false; return; }
+        const rk = impKey(r.site) + '|' + impKey(r.room);
+        if (seenRooms.has(rk)) { r.err = 'Listed twice in this paste'; r.include = false; return; }
+        seenRooms.add(rk);
+        const prop = impFindProp(r.site);
+        const room = prop ? impFindRoom(prop.id, r.room) : null;
+        const notes = prop ? [] : [`new site “${r.site}”`];
+        if (addOcc) r.newOccupants = r.occupantNames.filter(n => {
+          const k = impNameKey(n);
+          if (!k || seenNames.has(k) || impFindTenant(n)) return false;
+          seenNames.add(k); return true;
+        });
+        const cat = r.category || (room ? room.category : 'bedspacer');
+        const cap = r.pax > 0 ? r.pax : (room ? room.capacity : Math.max(1, r.occupantNames.length));
+        const rate = r.rateGiven ? r.rate : (room ? room.rate : 0);
+        if (room) {
+          const ch = [];
+          if (cat !== (room.category || 'bedspacer')) ch.push(`category → ${cat === 'private' ? 'Private' : 'Bedspacer'}`);
+          if (cap !== room.capacity) ch.push(`pax → ${cap}`);
+          if (Math.abs(rate - (room.rate || 0)) > 0.005) ch.push(`rate → ${impPeso(rate)}`);
+          r.plan = { action: ch.length ? 'update' : 'same', room, cat, cap, rate, changes: ch, notes };
+          r.include = ch.length > 0 || r.newOccupants.length > 0;
+        } else {
+          r.plan = { action: 'new', cat, cap, rate, changes: [], notes };
+          r.include = true;
+        }
+      });
+    }
+
+    function impDesc(r) { return r.particulars + (r.site ? ` (${r.site})` : ''); }
+
+    // ---------- mapping UI (transactions) ----------
     function impAccOptions(selected, preferCat, newLabel) {
       const groups = ['Asset', 'Liability', 'Equity', 'Revenue', 'Expense'];
       const order = [preferCat, ...groups.filter(g => g !== preferCat)];
@@ -4634,21 +4926,26 @@
     }
 
     function impRenderMaps() {
-      const nature = impNature();
-      document.getElementById('imp-cat-title').innerText = nature === 'Expense' ? 'Category → Expense Account (Debit)' : 'Category → Revenue Account (Credit)';
-      document.getElementById('imp-mode-title').innerText = nature === 'Expense' ? 'Mode of Payment → Paid From (Credit)' : 'Mode of Payment → Received Into (Debit)';
+      const kind = impKind();
+      const wrap = document.getElementById('imp-mapping');
+      if (!impIsTx(kind)) { wrap.classList.add('hidden'); return; }
+      wrap.classList.remove('hidden');
+      const isExp = kind === 'Expense';
+      document.getElementById('imp-cat-title').innerText = isExp ? 'Category → Expense Account (Debit)' : kind === 'Rent' ? 'Type → Account (Credit)' : 'Category → Revenue Account (Credit)';
+      document.getElementById('imp-mode-title').innerText = isExp ? 'Mode of Payment → Paid From (Credit)' : 'Payment type → Received Into (Debit)';
       const countBy = f => impRows.reduce((m, r) => { const k = f(r); m[k] = (m[k] || 0) + 1; return m; }, {});
       const cc = countBy(r => impKey(r.category)), mc = countBy(r => impKey(r.mode));
       const sel = 'w-full p-2 rounded bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs';
+      const jsKey = k => esc(k).replace(/\\/g, '\\\\').replace(/'/g, '&#39;');
       document.getElementById('imp-cat-map').innerHTML = Object.keys(impCatMap).sort(nameCmp).map(k => `
         <div class="grid grid-cols-2 gap-2 items-center">
           <span class="text-xs font-semibold truncate" title="${esc(impLabels['c:' + k])}">${esc(impLabels['c:' + k])} <span class="text-slate-400 font-normal">(${cc[k] || 0})</span></span>
-          <select class="${sel}" onchange="impSetMap('cat', '${esc(k).replace(/'/g, '&#39;')}', this.value)">${impAccOptions(impCatMap[k], nature === 'Expense' ? 'Expense' : 'Revenue', k ? impLabels['c:' + k] : '')}</select>
+          <select class="${sel}" onchange="impSetMap('cat', '${jsKey(k)}', this.value)">${impAccOptions(impCatMap[k], isExp ? 'Expense' : 'Revenue', k ? impLabels['c:' + k] : '')}</select>
         </div>`).join('');
       document.getElementById('imp-mode-map').innerHTML = Object.keys(impModeMap).sort(nameCmp).map(k => `
         <div class="grid grid-cols-2 gap-2 items-center">
           <span class="text-xs font-semibold truncate">${esc(impLabels['m:' + k])} <span class="text-slate-400 font-normal">(${mc[k] || 0})</span></span>
-          <select class="${sel}" onchange="impSetMap('mode', '${esc(k).replace(/'/g, '&#39;')}', this.value)">${impAccOptions(impModeMap[k], 'Asset', '')}</select>
+          <select class="${sel}" onchange="impSetMap('mode', '${jsKey(k)}', this.value)">${impAccOptions(impModeMap[k], 'Asset', '')}</select>
         </div>`).join('');
     }
 
@@ -4658,67 +4955,164 @@
       impRenderPreview();
     }
 
+    function impRenderOptions() {
+      const kind = impKind();
+      const box = document.getElementById('imp-options');
+      const cb = (id, checked, label, help) => `
+        <label class="flex items-start gap-2 text-xs cursor-pointer">
+          <input type="checkbox" id="${id}" ${checked ? 'checked' : ''} onchange="impAnalyze(); impRenderPreview();" class="accent-purple-600 mt-0.5" />
+          <span><b>${label}</b><br><span class="text-slate-500 dark:text-slate-400">${help}</span></span>
+        </label>`;
+      const prev = id => { const el = document.getElementById(id); return el ? el.checked : null; };
+      if (kind === 'Boarders') {
+        const u = prev('imp-opt-update'), d = prev('imp-opt-deposit');
+        box.innerHTML = cb('imp-opt-update', u === null ? true : u, 'Update boarders already in the app', 'Matched by name (“DELA CRUZ, JUAN” = “Juan Dela Cruz”). Only filled-in cells are changed.') +
+          cb('imp-opt-deposit', d === null ? false : d, 'Also post security deposits as journal entries', 'Leave this off if your Rent Transaction Log already has the deposit payments — otherwise they would be counted twice.');
+      } else if (kind === 'Rooms') {
+        const o = prev('imp-opt-occupants');
+        box.innerHTML = cb('imp-opt-occupants', o === null ? false : o, 'Also add the names in the Occupants column as boarders', 'Use this for sites whose boarders are not in your Boarders Info tab. Names already in the app are skipped. Separate names with ; or /.');
+      } else { box.innerHTML = ''; }
+      box.classList.toggle('hidden', !box.innerHTML);
+    }
+
+    // ---------- preview ----------
     function impRowAccounts(r) {
       const catCode = impCatMap[impKey(r.category)];
       const modeCode = impModeMap[impKey(r.mode)];
       const catLabel = catCode === IMP_NEW ? `➕ ${r.category} (new)` : (impAcc(catCode) ? `${catCode} ${impAcc(catCode).title}` : '—');
       const modeLabel = impAcc(modeCode) ? `${modeCode} ${impAcc(modeCode).title}` : '—';
-      return impNature() === 'Expense'
+      return impKind() === 'Expense'
         ? { debit: catCode, credit: modeCode, dLabel: catLabel, cLabel: modeLabel }
         : { debit: modeCode, credit: catCode, dLabel: modeLabel, cLabel: catLabel };
     }
 
     function impRowProblem(r) {
       if (r.err) return r.err;
+      if (!impIsTx(impKind())) return '';
       const a = impRowAccounts(r);
       if (!a.debit || !a.credit) return 'Pick an account';
       if (a.debit !== IMP_NEW && a.credit !== IMP_NEW && a.debit == a.credit) return 'Debit = Credit';
       return '';
     }
 
-    function impRenderPreview() {
-      const body = document.getElementById('imp-preview-body');
-      body.innerHTML = impRows.map((r, idx) => {
+    const IMP_HEADS = {
+      Expense: ['Date', 'Site', 'Particulars', 'Debit', 'Credit', 'Amount', 'Status'],
+      Rent: ['Date', 'Boarder', 'Room', 'Type', 'Month(s)', 'Debit', 'Credit', 'Paid', 'Status'],
+      Boarders: ['Name', 'Site / Room', 'Start', 'Status', 'Rate', 'Deposit', 'What happens'],
+      Rooms: ['Site', 'Room', 'Category', 'Pax', 'Rate', 'Occupants', 'What happens']
+    };
+    IMP_HEADS.Income = IMP_HEADS.Expense;
+
+    function impCells(r, prob) {
+      const kind = impKind();
+      const td = (html, cls = '') => `<td class="p-2 ${cls}">${html}</td>`;
+      const muted = 'whitespace-nowrap text-slate-500 dark:text-slate-400';
+      const dateCell = td(r.date ? esc(r.date) : `<span class="text-rose-500">${esc(r.rawDate || '—')}</span>`, 'whitespace-nowrap');
+
+      if (kind === 'Expense' || kind === 'Income') {
         const a = impRowAccounts(r);
+        const status = prob ? impChip(CHIP_BAD, '⚠ ' + prob) : r.dup ? impChip(CHIP_WARN, 'Duplicate?', 'Same date, amount and particulars already exist in your books') : impChip(CHIP_OK, 'Ready');
+        return dateCell + td(esc(r.site), 'whitespace-nowrap') +
+          td(esc(r.particulars) + (r.ref ? ` <span class="text-slate-400">· ${esc(r.ref)}</span>` : '')) +
+          td(esc(a.dLabel), muted) + td(esc(a.cLabel), muted) +
+          td(impPeso(r.amount), 'text-right font-bold whitespace-nowrap') + td(status, 'whitespace-nowrap');
+      }
+      if (kind === 'Rent') {
+        const a = impRowAccounts(r);
+        const chips = [];
+        if (prob) chips.push(impChip(CHIP_BAD, '⚠ ' + prob));
+        else if (r.dup) chips.push(impChip(CHIP_WARN, 'Duplicate?', 'A payment from this boarder with the same date and amount is already in your books'));
+        else chips.push(impChip(CHIP_OK, 'Ready'));
+        if (!prob && !r.tenant) chips.push(impChip(CHIP_WARN, 'Not in Boarders', 'This name is not in your Tenants list, so it will not appear in the Payment Matrix. Import Boarders Info first, or add the boarder later.'));
+        if (!prob && r.applicable > r.amount + 0.005) chips.push(impChip(CHIP_INFO, `Partial · ${impPeso(r.applicable - r.amount)} unpaid`));
+        const who = r.tenant && r.tenant.name !== r.boarder ? `${esc(r.boarder)} <span class="text-slate-400">→ ${esc(r.tenant.name)}</span>` : esc(r.boarder);
+        return dateCell + td(who) + td(esc([r.room, r.site].filter(Boolean).join(' · ')), 'whitespace-nowrap') +
+          td(esc(r.category), 'whitespace-nowrap') +
+          td(r.coverMonths.length ? esc(impMonthLabel(r.coverMonths)) : `<span class="text-slate-400">${r.monthText ? esc(r.monthText) : '—'}</span>`) +
+          td(esc(a.dLabel), muted) + td(esc(a.cLabel), muted) +
+          td(impPeso(r.amount) + (r.applicable && Math.abs(r.applicable - r.amount) > 0.005 ? `<div class="text-[10px] text-slate-400 font-normal">of ${impPeso(r.applicable)}</div>` : ''), 'text-right font-bold whitespace-nowrap') +
+          td(chips.join(' '));
+      }
+      const what = () => {
+        if (prob) return impChip(CHIP_BAD, '⚠ ' + prob);
+        const p = r.plan || {};
+        const notes = (p.notes || []).map(n => impChip(CHIP_INFO, n)).join(' ');
+        if (p.action === 'new') return impChip(CHIP_OK, kind === 'Rooms' ? 'Add room' : 'Add boarder') + ' ' + notes;
+        if (p.action === 'update') return impChip(CHIP_WARN, 'Update') + ` <span class="text-[10px] text-slate-500 dark:text-slate-400">${esc(p.changes.join(', '))}</span> ` + notes;
+        return impChip('bg-slate-500/20 text-slate-500', 'Already up to date') + ' ' + notes;
+      };
+      if (kind === 'Boarders') {
+        const p = r.plan || {};
+        const rateTxt = p.action === 'new' ? impPeso(p.rate) + (p.rateNote ? `<div class="text-[10px] text-slate-400 font-normal">${esc(p.rateNote)}</div>` : '') : (r.customRate > 0 ? impPeso(r.customRate) : '<span class="text-slate-400">—</span>');
+        return td(`<b>${esc(r.name)}</b>` + (p.tenant && p.tenant.name !== r.name ? ` <span class="text-slate-400">= ${esc(p.tenant.name)}</span>` : '')) +
+          td(esc([r.site, r.room].filter(Boolean).join(' · ')), 'whitespace-nowrap') +
+          td(r.start ? esc(r.start) : '<span class="text-slate-400">—</span>', 'whitespace-nowrap') +
+          td(r.status === 'Inactive' ? impChip(CHIP_BAD, 'Inactive') : impChip(CHIP_OK, r.status || 'Active')) +
+          td(rateTxt, 'text-right whitespace-nowrap') +
+          td(r.deposit > 0 ? impPeso(r.deposit) : '<span class="text-slate-400">—</span>', 'text-right whitespace-nowrap') + td(what());
+      }
+      // Rooms
+      const p = r.plan || {};
+      const occ = r.occupantNames.length ? esc(r.occupantNames.join('; ')) : '<span class="text-slate-400">—</span>';
+      const add = r.newOccupants && r.newOccupants.length ? `<div class="text-[10px] text-emerald-600 font-semibold">+ ${r.newOccupants.length} new boarder(s)</div>` : '';
+      return td(esc(r.site), 'whitespace-nowrap') + td(`<b>${esc(r.room)}</b>`, 'whitespace-nowrap') +
+        td(p.cat ? (p.cat === 'private' ? 'Private' : 'Bedspacer') : '—') + td(p.cap || '—', 'text-center') +
+        td(p.cat ? impPeso(p.rate) : '—', 'text-right whitespace-nowrap') + td(occ + add, 'text-[11px]') + td(what());
+    }
+
+    function impRenderPreview() {
+      const kind = impKind();
+      document.getElementById('imp-preview-head').innerHTML = '<th class="p-2">✔</th>' + IMP_HEADS[kind].map(h => `<th class="p-2 ${/Amount|Paid|Rate|Deposit/.test(h) ? 'text-right' : ''}">${h}</th>`).join('');
+      document.getElementById('imp-preview-body').innerHTML = impRows.map((r, idx) => {
         const prob = impRowProblem(r);
-        const status = prob ? `<span class="badge bg-rose-500/15 text-rose-600">⚠ ${esc(prob)}</span>`
-          : r.dup ? `<span class="badge bg-amber-500/20 text-amber-600" title="Same date, amount and particulars already exist in your books">Duplicate?</span>`
-          : `<span class="badge bg-emerald-500/15 text-emerald-600">Ready</span>`;
-        return `<tr class="${r.include && !prob ? '' : 'opacity-60'}">
-          <td class="p-2"><input type="checkbox" ${r.include && !prob ? 'checked' : ''} ${prob ? 'disabled' : ''} onchange="impToggle(${idx}, this.checked)" class="accent-purple-600" /></td>
-          <td class="p-2 whitespace-nowrap">${r.date ? esc(r.date) : `<span class="text-rose-500">${esc(r.rawDate || '—')}</span>`}</td>
-          <td class="p-2 whitespace-nowrap">${esc(r.site)}</td>
-          <td class="p-2">${esc(r.particulars)}${r.ref ? ` <span class="text-slate-400">· ${esc(r.ref)}</span>` : ''}</td>
-          <td class="p-2 whitespace-nowrap text-slate-500 dark:text-slate-400">${esc(a.dLabel)}</td>
-          <td class="p-2 whitespace-nowrap text-slate-500 dark:text-slate-400">${esc(a.cLabel)}</td>
-          <td class="p-2 text-right font-bold whitespace-nowrap">${impPeso(r.amount)}</td>
-          <td class="p-2 whitespace-nowrap">${status}</td>
+        const on = r.include && !prob;
+        return `<tr class="${on ? '' : 'opacity-60'}">
+          <td class="p-2"><input type="checkbox" ${on ? 'checked' : ''} ${prob ? 'disabled' : ''} onchange="impToggle(${idx}, this.checked)" class="accent-purple-600" /></td>
+          ${impCells(r, prob)}
         </tr>`;
       }).join('');
 
       const sel = impRows.filter(r => r.include && !impRowProblem(r));
-      const total = sel.reduce((s, r) => s + r.amount, 0);
-      const dups = impRows.filter(r => r.dup).length, bad = impRows.filter(r => impRowProblem(r)).length;
-      document.getElementById('imp-summary').innerHTML =
-        `<span class="text-emerald-600 dark:text-emerald-400">${sel.length} of ${impRows.length} row(s) selected · ${impPeso(total)}</span>` +
-        (dups ? ` <span class="text-amber-600">· ${dups} possible duplicate(s) unticked</span>` : '') +
-        (bad ? ` <span class="text-rose-500">· ${bad} row(s) need fixing</span>` : '');
+      const bad = impRows.filter(r => impRowProblem(r)).length;
+      let summary = '';
       const btn = document.getElementById('imp-commit-btn');
+      if (impIsTx(kind)) {
+        const total = sel.reduce((s, r) => s + r.amount, 0);
+        const dups = impRows.filter(r => r.dup).length;
+        const unknown = kind === 'Rent' ? sel.filter(r => !r.tenant).length : 0;
+        summary = `<span class="text-emerald-600 dark:text-emerald-400">${sel.length} of ${impRows.length} row(s) selected · ${impPeso(total)}</span>` +
+          (dups ? ` <span class="text-amber-600">· ${dups} possible duplicate(s)</span>` : '') +
+          (unknown ? ` <span class="text-amber-600">· ${unknown} boarder name(s) not found</span>` : '');
+        btn.innerText = sel.length ? `✅ Import ${sel.length} Transaction(s)` : '✅ Import Selected';
+      } else {
+        const n = a => sel.filter(r => r.plan && r.plan.action === a).length;
+        const occ = kind === 'Rooms' ? sel.reduce((s, r) => s + (r.newOccupants ? r.newOccupants.length : 0), 0) : 0;
+        const same = impRows.filter(r => r.plan && r.plan.action === 'same').length;
+        const noun = kind === 'Rooms' ? 'room' : 'boarder';
+        summary = `<span class="text-emerald-600 dark:text-emerald-400">${n('new')} new ${noun}(s) · ${n('update')} update(s)${occ ? ` · ${occ} occupant(s) as new boarders` : ''}</span>` +
+          (same ? ` <span class="text-slate-400">· ${same} already up to date</span>` : '');
+        btn.innerText = sel.length ? `✅ Import ${sel.length} ${kind === 'Rooms' ? 'Room' : 'Boarder'}(s)` : '✅ Import Selected';
+      }
+      if (bad) summary += ` <span class="text-rose-500">· ${bad} row(s) need fixing</span>`;
+      document.getElementById('imp-summary').innerHTML = summary;
       btn.disabled = !sel.length;
-      btn.innerText = sel.length ? `✅ Import ${sel.length} Transaction(s)` : '✅ Import Selected';
     }
 
     function impRenderAll() {
-      document.getElementById('imp-mapping').classList.remove('hidden');
       document.getElementById('imp-preview-wrap').classList.remove('hidden');
+      impRenderOptions();
+      impAnalyze();          // re-plan now that option checkboxes exist
       impRenderMaps();
       impRenderPreview();
     }
     function impToggle(idx, on) { if (impRows[idx]) impRows[idx].include = on; impRenderPreview(); }
-    function impSelectAll(on) { impRows.forEach(r => { r.include = on && !impRowProblem(r) && !r.dup; }); impRenderPreview(); }
+    function impSelectAll(on) {
+      impRows.forEach(r => { r.include = on && !impRowProblem(r) && !r.dup && !(r.plan && r.plan.action === 'same'); });
+      impRenderPreview();
+    }
 
     function impNextCode(cat) {
-      const base = cat === 'Expense' ? 5000 : 4000;
+      const base = cat === 'Expense' ? 5000 : cat === 'Liability' ? 2000 : 4000;
       const used = new Set(chartOfAccounts.map(a => Number(a.code)));
       let max = base;
       chartOfAccounts.forEach(a => { const c = Number(a.code); if (c >= base && c < base + 1000 && !a.isContra) max = Math.max(max, c); });
@@ -4728,55 +5122,74 @@
       return code;
     }
 
+    // ---------- save ----------
     function impCommit() {
-      const nature = impNature();
+      const kind = impKind();
       const sel = impRows.filter(r => r.include && !impRowProblem(r));
       if (!sel.length) return;
-      if (!confirm(`Post ${sel.length} ${nature.toLowerCase()} transaction(s) totalling ${impPeso(sel.reduce((s, r) => s + r.amount, 0))} to your books?`)) return;
+      if (kind === 'Boarders') return impCommitBoarders(sel);
+      if (kind === 'Rooms') return impCommitRooms(sel);
+
+      const total = sel.reduce((s, r) => s + r.amount, 0);
+      const label = kind === 'Expense' ? 'expense' : kind === 'Rent' ? 'rent/collection' : 'income';
+      if (!confirm(`Post ${sel.length} ${label} transaction(s) totalling ${impPeso(total)} to your books?`)) return;
 
       // create any new accounts that were chosen
       const created = [];
       Object.keys(impCatMap).forEach(k => {
         if (impCatMap[k] !== IMP_NEW) return;
         if (!sel.some(r => impKey(r.category) === k)) return;
-        const cat = nature === 'Expense' ? 'Expense' : 'Revenue';
         const title = impLabels['c:' + k];
+        const cat = kind === 'Expense' ? 'Expense' : (/deposit/i.test(title) ? 'Liability' : 'Revenue');
         const existing = chartOfAccounts.find(a => a.category === cat && impNorm(a.title) === impNorm(title));
         if (existing) { impCatMap[k] = existing.code; return; }
         const code = impNextCode(cat);
-        chartOfAccounts.push({ code, title, category: cat, subCategoryClass: cat === 'Expense' ? 'Operating Expense' : 'Operating Revenue', roleTag: 'none', normal: cat === 'Expense' ? 'Debit' : 'Credit', initialBalance: 0, isContra: false });
+        const sub = cat === 'Expense' ? 'Operating Expense' : cat === 'Liability' ? 'Current Liability' : 'Operating Revenue';
+        chartOfAccounts.push({ code, title, category: cat, subCategoryClass: sub, roleTag: 'none', normal: cat === 'Expense' ? 'Debit' : 'Credit', initialBalance: 0, isContra: false });
         impCatMap[k] = code;
         created.push(`${code} ${title}`);
       });
 
       // remember mappings for next time
-      Object.entries(impCatMap).forEach(([k, v]) => { if (v !== IMP_NEW && v) impSaved[`${nature}|cat|${k}`] = v; });
+      Object.entries(impCatMap).forEach(([k, v]) => { if (v !== IMP_NEW && v) impSaved[`${kind}|cat|${k}`] = v; });
       Object.entries(impModeMap).forEach(([k, v]) => { if (v) impSaved[`mode|${k}`] = v; });
       try { localStorage.setItem(IMP_MAP_KEY, JSON.stringify(impSaved)); } catch (e) {}
 
-      // post in date order so JV numbers run chronologically
-      const base = Date.now();
+      const rentRev = getRentRevAcc();
       let n = 0;
+      // post in date order so JV numbers run chronologically
       [...sel].sort((a, b) => a.date.localeCompare(b.date) || a.i - b.i).forEach(r => {
         const a = impRowAccounts(r);
         if (a.debit == a.credit) return;
-        const cashAcc = impAcc(nature === 'Expense' ? a.credit : a.debit);
+        const cashAcc = impAcc(kind === 'Expense' ? a.credit : a.debit);
         const isBank = /gcash|bank|wallet|transfer|online/i.test(r.mode) || (cashAcc && /gcash|bank|wallet/i.test(cashAcc.title));
         const ref = r.ref && !transactions.some(t => t.ref === r.ref) ? r.ref : nextJvRef(r.date);
-        transactions.push({
-          id: base + n,
-          date: r.date,
-          ref,
-          type: nature,
-          particulars: impDesc(r),
-          mode: isBank ? 'GCash' : 'Cash',
-          debitCode: Number(a.debit),
-          creditCode: Number(a.credit),
-          amount: r.amount,
-          site: r.site || '',
-          importedFrom: 'spreadsheet',
-          fileAttachment: null
-        });
+        const tx = {
+          id: impId(), date: r.date, ref,
+          type: kind === 'Expense' ? 'Expense' : 'Income',
+          particulars: '', mode: isBank ? 'GCash' : 'Cash',
+          debitCode: Number(a.debit), creditCode: Number(a.credit),
+          amount: r.amount, site: r.site || '', importedFrom: 'spreadsheet', fileAttachment: null
+        };
+        if (kind === 'Rent') {
+          const cr = impAcc(tx.creditCode);
+          const name = r.tenant ? r.tenant.name : r.boarder;
+          const mLabel = impMonthLabel(r.coverMonths);
+          const isDeposit = cr && cr.category === 'Liability';
+          const isRent = cr && cr.code == rentRev.code;
+          tx.category = isDeposit ? 'deposit' : isRent ? 'rent' : 'other';
+          tx.particulars = isRent ? `Rent Payment - ${name}${mLabel ? ` (${mLabel})` : ''}`
+            : isDeposit ? `${/advance/i.test(r.category) ? 'Advance Deposit' : 'Security Deposit'} - ${name}`
+            : `${r.category} - ${name}${mLabel ? ` (${mLabel})` : ''}`;
+          if (r.coverMonths.length) tx.coverMonths = r.coverMonths;
+          if (r.tenant) tx.tenantId = r.tenant.id;
+          if (r.room) tx.room = r.room;
+          if (r.applicable > 0) tx.applicableAmount = r.applicable;
+          if (r.paidTo) tx.paidTo = r.paidTo;
+        } else {
+          tx.particulars = impDesc(r);
+        }
+        transactions.push(tx);
         n++;
       });
 
@@ -4784,6 +5197,84 @@
       render();
       closeImportTxModal();
       alert(`✅ Imported ${n} transaction(s).` + (created.length ? `\n\nNew account(s) added to your Chart of Accounts:\n• ${created.join('\n• ')}` : ''));
+    }
+
+    function impGetRoom(site, roomName, defaults) {
+      const prop = findOrCreateProperty(site);
+      let room = impFindRoom(prop.id, roomName);
+      let isNew = false;
+      if (!room) {
+        room = { id: impId(), propertyId: prop.id, name: roomName, capacity: 1, occupied: 0, rate: 0, category: 'bedspacer', elecInclusive: false, waterInclusive: false, ...(defaults || {}) };
+        rooms.push(room);
+        isNew = true;
+      }
+      return { prop, room, isNew };
+    }
+    const impRoomHasPayer = roomId => tenants.some(t => t.roomId == roomId && t.status !== 'Inactive');
+
+    function impCommitBoarders(sel) {
+      const postDeposits = document.getElementById('imp-opt-deposit') && document.getElementById('imp-opt-deposit').checked;
+      const adds = sel.filter(r => r.plan.action === 'new').length, ups = sel.length - adds;
+      if (!confirm(`Add ${adds} new boarder(s) and update ${ups} existing boarder(s)?`)) return;
+      const newRooms = new Set();
+      let deposits = 0;
+      sel.forEach(r => {
+        const { prop, room, isNew } = impGetRoom(r.site, r.room);
+        if (isNew) newRooms.add(room.id);
+        if (r.plan.action === 'update') {
+          const t = r.plan.tenant;
+          t.propertyId = prop.id; t.roomId = room.id;
+          if (r.status) t.status = r.status;
+          if (r.contact) t.contact = r.contact;
+          if (r.address) t.address = r.address;
+          if (r.start) t.leaseStart = r.start;
+          if (r.dueDay) t.dueDay = r.dueDay;
+          if (r.customRate > 0) t.rate = r.customRate;
+          if (r.deposit > 0) t.deposit = r.deposit;
+          return;
+        }
+        const status = r.status || 'Active';
+        const rate = r.customRate > 0 ? r.customRate
+          : room.category === 'private' ? (impRoomHasPayer(room.id) ? 0 : (room.rate || 0))
+          : (room.rate || 0);
+        const t = { id: impId(), name: r.name, contact: r.contact, address: r.address, propertyId: prop.id, roomId: room.id, rate, deposit: r.deposit || 0, dueDay: r.dueDay || 1, leaseStart: r.start || '', leaseEnd: '', status };
+        tenants.push(t);
+        if (postDeposits && r.deposit > 0) {
+          const d = r.start || todayLocal();
+          const cashAcc = chartOfAccounts.find(a => a.roleTag === 'cash') || chartOfAccounts[0];
+          const liabAcc = chartOfAccounts.find(a => a.roleTag === 'ap') || chartOfAccounts.find(a => a.category === 'Liability') || chartOfAccounts[0];
+          transactions.push({ id: impId(), date: d, ref: nextJvRef(d), category: 'deposit', type: 'Income', particulars: `Security Deposit - ${r.name}`, mode: 'Cash', debitCode: cashAcc.code, creditCode: liabAcc.code, amount: r.deposit, tenantId: t.id, importedFrom: 'spreadsheet', fileAttachment: null });
+          deposits++;
+        }
+      });
+      // rooms created here get enough beds for the boarders placed in them
+      rooms.forEach(rm => { if (newRooms.has(rm.id)) rm.capacity = Math.max(1, tenants.filter(t => t.roomId == rm.id && t.status !== 'Inactive').length); });
+      saveData();
+      render();
+      closeImportTxModal();
+      alert(`✅ Boarders imported: ${adds} added, ${ups} updated.` +
+        (newRooms.size ? `\n\n${newRooms.size} room(s) were not in your Inventory and were created with ₱0 rate — set their rates in Property → Inventory (or import Room Inventory).` : '') +
+        (deposits ? `\n\n${deposits} security deposit(s) posted to the journal.` : ''));
+    }
+
+    function impCommitRooms(sel) {
+      const adds = sel.filter(r => r.plan.action === 'new').length;
+      const ups = sel.filter(r => r.plan.action === 'update').length;
+      const occ = sel.reduce((s, r) => s + (r.newOccupants ? r.newOccupants.length : 0), 0);
+      if (!confirm(`Add ${adds} room(s), update ${ups} room(s)${occ ? ` and add ${occ} occupant(s) as boarders` : ''}?`)) return;
+      sel.forEach(r => {
+        const p = r.plan;
+        const { prop, room } = impGetRoom(r.site, r.room, { category: p.cat, capacity: p.cap, rate: p.rate });
+        room.category = p.cat; room.capacity = p.cap; room.rate = p.rate;
+        (r.newOccupants || []).forEach(name => {
+          const rate = room.category === 'private' ? (impRoomHasPayer(room.id) ? 0 : room.rate) : room.rate;
+          tenants.push({ id: impId(), name, contact: '', address: '', propertyId: prop.id, roomId: room.id, rate, deposit: 0, dueDay: 1, leaseStart: '', leaseEnd: '', status: 'Active' });
+        });
+      });
+      saveData();
+      render();
+      closeImportTxModal();
+      alert(`✅ Room Inventory imported: ${adds} added, ${ups} updated` + (occ ? `, ${occ} boarder(s) added from Occupants.` : '.'));
     }
 
     function exportFullBackup() {
@@ -4924,7 +5415,7 @@
 
         const hasPaidThisMonth = transactions.some(t => {
           if (!isRentPaymentFor(t, tn)) return false;
-          return t.date.startsWith(currentMonthYear);
+          return txCoversMonth(t, currentMonthYear);
         });
         return !hasPaidThisMonth && currentDay > (tn.dueDay || 1);
       });
